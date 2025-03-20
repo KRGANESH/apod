@@ -30,9 +30,17 @@
 </head>
 
 <body>
+	<center>
+		<h1> Astronomy Picture of the Day </h1>
+<p>
+Discover the cosmos!
+Each day a different image or photograph of our fascinating universe is
+featured, along with a brief explanation written by a professional astronomer.
+</p>
+<b id="date"></b>
     <img id="apod" alt="APOD Image">
     <p id="explanation"></p> <!-- Added an ID to the <p> tag -->
-
+	</center>
     <script>
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register("sw.js")
@@ -47,10 +55,13 @@
                 const json = await response.json();
                 let image_url = json["hdurl"] || json["url"];
                 let explanation_text = json["explanation"];
+                let date_text = json["date"];
 
                 let img = document.getElementById("apod");
                 let explanation = document.getElementById("explanation");
+                let date = document.getElementById("date");
 
+				date.textContent = date_text;
                 img.src = image_url;
                 explanation.textContent = explanation_text; // Set text content of <p>
 
