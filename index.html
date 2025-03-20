@@ -33,6 +33,12 @@
     <img id="apod" alt="APOD Image">
 
     <script>
+		if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js")
+        .then(() => console.log("Service Worker Registered"))
+        .catch((err) => console.error("Service Worker Error:", err));
+}
+
         async function get_apod() {
             let api_url = "https://api.nasa.gov/planetary/apod?api_key=PV0qEJBHTvngHQBb4VNJQgCXxdyrlaCe5m42FQlJ";
             try {
