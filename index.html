@@ -42,6 +42,9 @@ featured, along with a brief explanation written by a professional astronomer.
 <P></P>
 <button id="downloadBtn" type="button">Download</button>
 </center>
+<center>
+	<b id="title"></b>
+</center>
 <p id="explanation"></p>
 	
 <script>
@@ -56,17 +59,20 @@ async function get_apod() {
     try {
         const response = await fetch(api_url);
         const json = await response.json();
+	let title_text = json["title"];
         let image_url = json["url"];
 	let hd_image_url = json["hdurl"];
         let explanation_text = json["explanation"];
         let date_text = json["date"];
 
         let img = document.getElementById("apod");
+	let title = document.getElementById("title");
         let explanation = document.getElementById("explanation");
         let date = document.getElementById("date");
 
         date.textContent = date_text;
         img.src = image_url;
+	title.textContent =  title_text;
         explanation.textContent = explanation_text; 
 
         // Add event listener to download button
