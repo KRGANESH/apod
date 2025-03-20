@@ -49,13 +49,14 @@ if ("serviceWorker" in navigator) {
          .then((reg) => console.log("Service Worker Registered ✅", reg))
         .catch((err) => console.error("Service Worker Error ❌", err));
 }
+
 async function get_apod() {
     let api_url = "https://api.nasa.gov/planetary/apod?api_key=PV0qEJBHTvngHQBb4VNJQgCXxdyrlaCe5m42FQlJ";
     try {
         const response = await fetch(api_url);
         const json = await response.json();
         let image_url = json["url"];
-        let hd_image_url = json["hdurl"] || image_url; // Use HD URL if available
+	let hd_image_url = json["hdurl"];
         let explanation_text = json["explanation"];
         let date_text = json["date"];
 
@@ -68,25 +69,14 @@ async function get_apod() {
         explanation.textContent = explanation_text; 
 
         // Add event listener to download button
-        document.getElementById("downloadBtn").addEventListener("click", async function() {
-            try {
-                const response = await fetch(hd_image_url); // Fetch the image as a blob
-                const blob = await response.blob(); // Convert response to blob
-                const blobUrl = URL.createObjectURL(blob); // Create URL for download
-
-                let filename = hd_image_url.substring(hd_image_url.lastIndexOf("/") + 1);
-                let a = document.createElement("a");
-                a.href = blobUrl;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-
-                // Revoke the object URL to free up memory
-                URL.revokeObjectURL(blobUrl);
-            } catch (error) {
-                console.error("Error downloading image:", error);
-            }
+        document.getElementById("downloadBtn").addEventListener("click", function() {
+	    let filename = hd_image_url.substring(image_url.lastIndexOf("/") + 1);
+            let a = document.createElement("a");
+            a.href = hd_image_url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         });
 
     } catch (error) {
@@ -96,8 +86,7 @@ async function get_apod() {
 
 window.onload = get_apod;
 
-
     </script>
 </body>
 
-</html>
+</html> this is not dwonloading the image it hust opens the images in a window
