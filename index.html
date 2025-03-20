@@ -30,27 +30,28 @@
 </head>
 
 <body>
-	<center>
-		<h1> Astronomy Picture of the Day </h1>
+<center>
+<h1> Astronomy Picture of the Day </h1>
 <p>
 Discover the cosmos!
 Each day a different image or photograph of our fascinating universe is
 featured, along with a brief explanation written by a professional astronomer.
 </p>
 <b id="date"></b>
-    <img id="apod" alt="APOD Image">
-    <p id="explanation"></p> <!-- Added an ID to the <p> tag -->
-	</center>
-    <script>
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("sw.js")
-                .then((reg) => console.log("Service Worker Registered ✅", reg))
-                .catch((err) => console.error("Service Worker Error ❌", err));
-        }
+<img id="apod" alt="APOD Image">
+</center>
+<p id="explanation"></p>
+	
+<script>
+if ("serviceWorker" in navigator) {
+	navigator.serviceWorker.register("sw.js")
+         .then((reg) => console.log("Service Worker Registered ✅", reg))
+        .catch((err) => console.error("Service Worker Error ❌", err));
+}
 
-        async function get_apod() {
-            let api_url = "https://api.nasa.gov/planetary/apod?api_key=PV0qEJBHTvngHQBb4VNJQgCXxdyrlaCe5m42FQlJ";
-            try {
+async function get_apod() {
+        let api_url = "https://api.nasa.gov/planetary/apod?api_key=PV0qEJBHTvngHQBb4VNJQgCXxdyrlaCe5m42FQlJ";
+        try {
                 const response = await fetch(api_url);
                 const json = await response.json();
                 let image_url = json["hdurl"] || json["url"];
