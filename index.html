@@ -55,7 +55,8 @@ async function get_apod() {
     try {
         const response = await fetch(api_url);
         const json = await response.json();
-        let image_url = json["hdurl"] || json["url"];
+        let image_url = json["url"];
+	let hd_image_url = json["hdurl"];
         let explanation_text = json["explanation"];
         let date_text = json["date"];
 
@@ -69,9 +70,10 @@ async function get_apod() {
 
         // Add event listener to download button
         document.getElementById("downloadBtn").addEventListener("click", function() {
+	    let filename = hd_image_url.substring(image_url.lastIndexOf("/") + 1);
             let a = document.createElement("a");
-            a.href = image_url;
-            a.download = "apod.jpg"; // Suggested filename
+            a.href = hd_image_url;
+            a.download = filename;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
