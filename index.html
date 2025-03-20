@@ -39,6 +39,7 @@ featured, along with a brief explanation written by a professional astronomer.
 </p>
 <b id="date"></b>
 <img id="apod" alt="APOD Image">
+<button id="downloadBtn" type="button">Download</button>
 </center>
 <p id="explanation"></p>
 	
@@ -50,28 +51,39 @@ if ("serviceWorker" in navigator) {
 }
 
 async function get_apod() {
-        let api_url = "https://api.nasa.gov/planetary/apod?api_key=PV0qEJBHTvngHQBb4VNJQgCXxdyrlaCe5m42FQlJ";
-        try {
-                const response = await fetch(api_url);
-                const json = await response.json();
-                let image_url = json["hdurl"] || json["url"];
-                let explanation_text = json["explanation"];
-                let date_text = json["date"];
+    let api_url = "https://api.nasa.gov/planetary/apod?api_key=PV0qEJBHTvngHQBb4VNJQgCXxdyrlaCe5m42FQlJ";
+    try {
+        const response = await fetch(api_url);
+        const json = await response.json();
+        let image_url = json["hdurl"] || json["url"];
+        let explanation_text = json["explanation"];
+        let date_text = json["date"];
 
-                let img = document.getElementById("apod");
-                let explanation = document.getElementById("explanation");
-                let date = document.getElementById("date");
+        let img = document.getElementById("apod");
+        let explanation = document.getElementById("explanation");
+        let date = document.getElementById("date");
 
-				date.textContent = date_text;
-                img.src = image_url;
-                explanation.textContent = explanation_text; // Set text content of <p>
+        date.textContent = date_text;
+        img.src = image_url;
+        explanation.textContent = explanation_text; 
 
-            } catch (error) {
-                console.error("Error fetching APOD image:", error);
-            }
-        }
+        // Add event listener to download button
+        document.getElementById("downloadBtn").addEventListener("click", function() {
+            let a = document.createElement("a");
+            a.href = image_url;
+            a.download = "apod.jpg"; // Suggested filename
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
 
-        window.onload = get_apod;
+    } catch (error) {
+        console.error("Error fetching APOD image:", error);
+    }
+}
+
+window.onload = get_apod;
+
     </script>
 </body>
 
